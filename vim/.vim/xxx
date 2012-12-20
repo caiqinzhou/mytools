@@ -1,0 +1,638 @@
+filetypes.vim:	nnoremap ` :TlistToggle<CR>
+plugin/taglist.vim:"    Tlist_Ctags_Cmd variable to point to the location of the exuberant ctags
+plugin/taglist.vim:"    'Tlist_Inc_Winwidth' variable to 0 in the .vimrc file.
+plugin/taglist.vim:" 6. You can now use the ":TlistToggle" command to open/close the taglist
+plugin/taglist.vim:    if !exists('Tlist_Ctags_Cmd')
+plugin/taglist.vim:            let Tlist_Ctags_Cmd = 'exuberant-ctags'
+plugin/taglist.vim:            let Tlist_Ctags_Cmd = 'exctags'
+plugin/taglist.vim:            let Tlist_Ctags_Cmd = 'ctags'
+plugin/taglist.vim:            let Tlist_Ctags_Cmd = 'ctags.exe'
+plugin/taglist.vim:            let Tlist_Ctags_Cmd = 'tags'
+plugin/taglist.vim:    if !exists('Tlist_Auto_Open')
+plugin/taglist.vim:        let Tlist_Auto_Open = 0
+plugin/taglist.vim:    if !exists('Tlist_GainFocus_On_ToggleOpen')
+plugin/taglist.vim:        let Tlist_GainFocus_On_ToggleOpen = 0
+plugin/taglist.vim:    if !exists('Tlist_Process_File_Always')
+plugin/taglist.vim:        let Tlist_Process_File_Always = 0
+plugin/taglist.vim:    if !exists('Tlist_Show_Menu')
+plugin/taglist.vim:        let Tlist_Show_Menu = 0
+plugin/taglist.vim:    if !exists('Tlist_Sort_Type')
+plugin/taglist.vim:        let Tlist_Sort_Type = 'order'
+plugin/taglist.vim:    if !exists('Tlist_Use_Horiz_Window')
+plugin/taglist.vim:        let Tlist_Use_Horiz_Window = 0
+plugin/taglist.vim:    " side.  This setting is relevant only if Tlist_Use_Horiz_Window is set to
+plugin/taglist.vim:    if !exists('Tlist_Use_Right_Window')
+plugin/taglist.vim:        let Tlist_Use_Right_Window = 0
+plugin/taglist.vim:    if !exists('Tlist_Inc_Winwidth')
+plugin/taglist.vim:            let Tlist_Inc_Winwidth = 0
+plugin/taglist.vim:            let Tlist_Inc_Winwidth = 1
+plugin/taglist.vim:    if !exists('Tlist_WinWidth')
+plugin/taglist.vim:        let Tlist_WinWidth = 30
+plugin/taglist.vim:    if !exists('Tlist_WinHeight')
+plugin/taglist.vim:        let Tlist_WinHeight = 10
+plugin/taglist.vim:    if !exists('Tlist_Display_Prototype')
+plugin/taglist.vim:        let Tlist_Display_Prototype = 0
+plugin/taglist.vim:    if !exists('Tlist_Display_Tag_Scope')
+plugin/taglist.vim:        let Tlist_Display_Tag_Scope = 1
+plugin/taglist.vim:    if !exists('Tlist_Use_SingleClick')
+plugin/taglist.vim:        let Tlist_Use_SingleClick = 0
+plugin/taglist.vim:    if !exists('Tlist_Compact_Format')
+plugin/taglist.vim:        let Tlist_Compact_Format = 0
+plugin/taglist.vim:    if !exists('Tlist_Exit_OnlyWindow')
+plugin/taglist.vim:        let Tlist_Exit_OnlyWindow = 0
+plugin/taglist.vim:    if !exists('Tlist_File_Fold_Auto_Close')
+plugin/taglist.vim:        let Tlist_File_Fold_Auto_Close = 0
+plugin/taglist.vim:    if !exists('Tlist_Close_On_Select')
+plugin/taglist.vim:        let Tlist_Close_On_Select = 0
+plugin/taglist.vim:    if !exists('Tlist_Auto_Update')
+plugin/taglist.vim:        let Tlist_Auto_Update = 1
+plugin/taglist.vim:    if !exists('Tlist_Auto_Highlight_Tag')
+plugin/taglist.vim:        let Tlist_Auto_Highlight_Tag = 1
+plugin/taglist.vim:    if !exists('Tlist_Highlight_Tag_On_BufEnter')
+plugin/taglist.vim:        let Tlist_Highlight_Tag_On_BufEnter = 1
+plugin/taglist.vim:    if !exists('Tlist_Enable_Fold_Column')
+plugin/taglist.vim:        let Tlist_Enable_Fold_Column = 1
+plugin/taglist.vim:    if !exists('Tlist_Show_One_File')
+plugin/taglist.vim:        let Tlist_Show_One_File = 0
+plugin/taglist.vim:    if !exists('Tlist_Max_Submenu_Items')
+plugin/taglist.vim:        let Tlist_Max_Submenu_Items = 20
+plugin/taglist.vim:    if !exists('Tlist_Max_Tag_Length')
+plugin/taglist.vim:        let Tlist_Max_Tag_Length = 10
+plugin/taglist.vim:    if g:Tlist_Auto_Open
+plugin/taglist.vim:        autocmd VimEnter * nested call s:Tlist_Window_Check_Auto_Open()
+plugin/taglist.vim:    if g:Tlist_Process_File_Always
+plugin/taglist.vim:        autocmd BufEnter * call s:Tlist_Refresh()
+plugin/taglist.vim:    if g:Tlist_Show_Menu
+plugin/taglist.vim:        autocmd GUIEnter * call s:Tlist_Menu_Init()
+plugin/taglist.vim:    autocmd BufFilePost __Tag_List__ call s:Tlist_Vim_Session_Load()
+plugin/taglist.vim:    command! -nargs=0 -bar TlistToggle call s:Tlist_Window_Toggle()
+plugin/taglist.vim:    command! -nargs=0 -bar TlistOpen call s:Tlist_Window_Open()
+plugin/taglist.vim:    " For backwards compatiblity define the Tlist command
+plugin/taglist.vim:    command! -nargs=0 -bar Tlist TlistToggle
+plugin/taglist.vim:    command! -nargs=+ -complete=file TlistAddFiles
+plugin/taglist.vim:                \  call s:Tlist_Add_Files(<f-args>)
+plugin/taglist.vim:    command! -nargs=+ -complete=dir TlistAddFilesRecursive
+plugin/taglist.vim:                \ call s:Tlist_Add_Files_Recursive(<f-args>)
+plugin/taglist.vim:    command! -nargs=0 -bar TlistClose call s:Tlist_Window_Close()
+plugin/taglist.vim:    command! -nargs=0 -bar TlistUpdate call s:Tlist_Update_Current_File()
+plugin/taglist.vim:    command! -nargs=0 -bar TlistHighlightTag call s:Tlist_Window_Highlight_Tag(
+plugin/taglist.vim:    " For backwards compatiblity define the TlistSync command
+plugin/taglist.vim:    command! -nargs=0 -bar TlistSync TlistHighlightTag
+plugin/taglist.vim:    command! -nargs=* -complete=buffer TlistShowPrototype
+plugin/taglist.vim:                \ echo Tlist_Get_Tag_Prototype_By_Line(<f-args>)
+plugin/taglist.vim:    command! -nargs=* -complete=buffer TlistShowTag
+plugin/taglist.vim:                \ echo Tlist_Get_Tagname_By_Line(<f-args>)
+plugin/taglist.vim:    command! -nargs=* -complete=file TlistSessionLoad
+plugin/taglist.vim:                \ call s:Tlist_Session_Load(<q-args>)
+plugin/taglist.vim:    command! -nargs=* -complete=file TlistSessionSave
+plugin/taglist.vim:                \ call s:Tlist_Session_Save(<q-args>)
+plugin/taglist.vim:    command! -bar TlistLock let Tlist_Auto_Update=0
+plugin/taglist.vim:    command! -bar TlistUnlock let Tlist_Auto_Update=1
+plugin/taglist.vim:    command! -nargs=? -complete=file -bar TlistDebug
+plugin/taglist.vim:                \ call s:Tlist_Debug_Enable(<q-args>)
+plugin/taglist.vim:    command! -nargs=0 -bar TlistUndebug  call s:Tlist_Debug_Disable()
+plugin/taglist.vim:    command! -nargs=0 -bar TlistMessages call s:Tlist_Debug_Show()
+plugin/taglist.vim:    exe 'autocmd FuncUndefined *' . s:tlist_sid . 'Tlist_* source ' .
+plugin/taglist.vim:    exe 'autocmd FuncUndefined *' . s:tlist_sid . 'Tlist_Window_* source ' .
+plugin/taglist.vim:    exe 'autocmd FuncUndefined *' . s:tlist_sid . 'Tlist_Menu_* source ' .
+plugin/taglist.vim:    exe 'autocmd FuncUndefined Tlist_* source ' .
+plugin/taglist.vim:    if g:Tlist_Show_Menu && has('gui_running')
+plugin/taglist.vim:        call s:Tlist_Menu_Init()
+plugin/taglist.vim:" file window from one of the taglist functions. The 'Tlist_Skip_Refresh'
+plugin/taglist.vim:let s:Tlist_Skip_Refresh = 0
+plugin/taglist.vim:" Tlist_Window_Display_Help()
+plugin/taglist.vim:function! s:Tlist_Window_Display_Help()
+plugin/taglist.vim:" Tlist_Window_Toggle_Help_Text()
+plugin/taglist.vim:function! s:Tlist_Window_Toggle_Help_Text()
+plugin/taglist.vim:    if g:Tlist_Compact_Format
+plugin/taglist.vim:        call s:Tlist_Window_Update_Line_Offsets(0, 1, full_help_size - brief_help_size)
+plugin/taglist.vim:        call s:Tlist_Window_Update_Line_Offsets(0, 0, full_help_size - brief_help_size)
+plugin/taglist.vim:    call s:Tlist_Window_Display_Help()
+plugin/taglist.vim:" Tlist_Debug_Enable
+plugin/taglist.vim:function! s:Tlist_Debug_Enable(...)
+plugin/taglist.vim:            call s:Tlist_Warning_Msg('Taglist: Unable to create log file '
+plugin/taglist.vim:" Tlist_Debug_Disable
+plugin/taglist.vim:function! s:Tlist_Debug_Disable(...)
+plugin/taglist.vim:" Tlist_Debug_Show
+plugin/taglist.vim:function! s:Tlist_Debug_Show()
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Taglist: No debug messages')
+plugin/taglist.vim:" Tlist_Log_Msg
+plugin/taglist.vim:function! s:Tlist_Log_Msg(msg)
+plugin/taglist.vim:" Tlist_Warning_Msg()
+plugin/taglist.vim:function! s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:" Tlist_Get_File_Index()
+plugin/taglist.vim:function! s:Tlist_Get_File_Index(fname)
+plugin/taglist.vim:" Tlist_Window_Get_File_Index_By_Linenum()
+plugin/taglist.vim:function! s:Tlist_Window_Get_File_Index_By_Linenum(lnum)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Get_File_Index_By_Linenum (' . a:lnum . ')')
+plugin/taglist.vim:    if g:Tlist_Show_One_File
+plugin/taglist.vim:" Tlist_Exe_Cmd_No_Acmds
+plugin/taglist.vim:function! s:Tlist_Exe_Cmd_No_Acmds(cmd)
+plugin/taglist.vim:" Tlist_Skip_File()
+plugin/taglist.vim:function! s:Tlist_Skip_File(filename, ftype)
+plugin/taglist.vim:" Tlist_User_Removed_File
+plugin/taglist.vim:function! s:Tlist_User_Removed_File(filename)
+plugin/taglist.vim:" Tlist_Update_Remove_List
+plugin/taglist.vim:function! s:Tlist_Update_Remove_List(filename, add)
+plugin/taglist.vim:" Tlist_FileType_Init
+plugin/taglist.vim:function! s:Tlist_FileType_Init(ftype)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_FileType_Init (' . a:ftype . ')')
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:            call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:            call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:            call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:            call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:" Tlist_Detect_Filetype
+plugin/taglist.vim:function! s:Tlist_Detect_Filetype(fname)
+plugin/taglist.vim:" Tlist_Get_Buffer_Filetype
+plugin/taglist.vim:function! s:Tlist_Get_Buffer_Filetype(bnum)
+plugin/taglist.vim:    return s:Tlist_Detect_Filetype(bname)
+plugin/taglist.vim:" Tlist_Discard_TagInfo
+plugin/taglist.vim:function! s:Tlist_Discard_TagInfo(fidx)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Discard_TagInfo (' .
+plugin/taglist.vim:" Tlist_Window_Update_Line_Offsets
+plugin/taglist.vim:function! s:Tlist_Window_Update_Line_Offsets(start_idx, increment, offset)
+plugin/taglist.vim:" Tlist_Discard_FileInfo
+plugin/taglist.vim:function! s:Tlist_Discard_FileInfo(fidx)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Discard_FileInfo (' .
+plugin/taglist.vim:    call s:Tlist_Discard_TagInfo(a:fidx)
+plugin/taglist.vim:" Tlist_Window_Remove_File_From_Display
+plugin/taglist.vim:function! s:Tlist_Window_Remove_File_From_Display(fidx)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Remove_File_From_Display (' .
+plugin/taglist.vim:    if g:Tlist_Compact_Format
+plugin/taglist.vim:    call s:Tlist_Window_Update_Line_Offsets(a:fidx + 1, 0, end - start + 1)
+plugin/taglist.vim:" Tlist_Remove_File
+plugin/taglist.vim:function! s:Tlist_Remove_File(file_idx, user_request)
+plugin/taglist.vim:        let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(line('.'))
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Remove_File (' .
+plugin/taglist.vim:        call s:Tlist_Window_Remove_File_From_Display(fidx)
+plugin/taglist.vim:        call s:Tlist_Update_Remove_List(fname, 1)
+plugin/taglist.vim:    call s:Tlist_Discard_FileInfo(fidx)
+plugin/taglist.vim:            let s:tlist_{j}_{k}_tag_type = s:Tlist_Get_Tag_Type_By_Tag(i, k)
+plugin/taglist.vim:            let s:tlist_{j}_{k}_tag_proto = s:Tlist_Get_Tag_Prototype(i, k)
+plugin/taglist.vim:            let s:tlist_{j}_{k}_tag_searchpat = s:Tlist_Get_Tag_SearchPat(i, k)
+plugin/taglist.vim:            let s:tlist_{j}_{k}_tag_linenum = s:Tlist_Get_Tag_Linenum(i, k)
+plugin/taglist.vim:        call s:Tlist_Discard_FileInfo(i)
+plugin/taglist.vim:    if g:Tlist_Show_One_File
+plugin/taglist.vim:" Tlist_Window_Goto_Window
+plugin/taglist.vim:function! s:Tlist_Window_Goto_Window()
+plugin/taglist.vim:            call s:Tlist_Exe_Cmd_No_Acmds(winnum . 'wincmd w')
+plugin/taglist.vim:" Tlist_Window_Create
+plugin/taglist.vim:function! s:Tlist_Window_Create()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Create()')
+plugin/taglist.vim:    if g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:        let win_size = g:Tlist_WinHeight
+plugin/taglist.vim:            if g:Tlist_Inc_Winwidth &&
+plugin/taglist.vim:                        \ &columns < (80 + g:Tlist_WinWidth)
+plugin/taglist.vim:                let &columns= &columns + g:Tlist_WinWidth + 1
+plugin/taglist.vim:        if g:Tlist_Use_Right_Window
+plugin/taglist.vim:        let win_size = g:Tlist_WinWidth
+plugin/taglist.vim:    call s:Tlist_Window_Init()
+plugin/taglist.vim:" Tlist_Window_Zoom
+plugin/taglist.vim:function! s:Tlist_Window_Zoom()
+plugin/taglist.vim:        if g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:            exe 'resize ' . g:Tlist_WinHeight
+plugin/taglist.vim:            exe 'vert resize ' . g:Tlist_WinWidth
+plugin/taglist.vim:        if g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:" Tlist_Ballon_Expr
+plugin/taglist.vim:function! Tlist_Ballon_Expr()
+plugin/taglist.vim:    let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(v:beval_lnum)
+plugin/taglist.vim:    let tidx = s:Tlist_Window_Get_Tag_Index(fidx, v:beval_lnum)
+plugin/taglist.vim:    return s:Tlist_Get_Tag_Prototype(fidx, tidx)
+plugin/taglist.vim:" Tlist_Window_Check_Width
+plugin/taglist.vim:function! s:Tlist_Window_Check_Width()
+plugin/taglist.vim:    if width != g:Tlist_WinWidth
+plugin/taglist.vim:        call s:Tlist_Log_Msg("Tlist_Window_Check_Width: Changing window " .
+plugin/taglist.vim:                    \ "width from " . width . " to " . g:Tlist_WinWidth)
+plugin/taglist.vim:            call s:Tlist_Exe_Cmd_No_Acmds(tlist_winnr . 'wincmd w')
+plugin/taglist.vim:        exe 'vert resize ' . g:Tlist_WinWidth
+plugin/taglist.vim:            call s:Tlist_Exe_Cmd_No_Acmds('wincmd p')
+plugin/taglist.vim:" Tlist_Window_Exit_Only_Window
+plugin/taglist.vim:" If the 'Tlist_Exit_OnlyWindow' option is set, then exit Vim if only the
+plugin/taglist.vim:function! s:Tlist_Window_Exit_Only_Window()
+plugin/taglist.vim:" Tlist_Window_Init
+plugin/taglist.vim:function! s:Tlist_Window_Init()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Init()')
+plugin/taglist.vim:    if g:Tlist_Enable_Fold_Column
+plugin/taglist.vim:    if g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:    if !g:Tlist_Use_Horiz_Window && v:version >= 700
+plugin/taglist.vim:        setlocal balloonexpr=Tlist_Ballon_Expr()
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('useopen')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('newwin')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('preview')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('prevwin')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('checktab')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('newtab')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Window_Jump_To_Tag('useopen')<CR>
+plugin/taglist.vim:                \ :call <SID>Tlist_Change_Sort('cmd', 'toggle', '')<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> <Space> :call <SID>Tlist_Window_Show_Info()<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> u :call <SID>Tlist_Window_Update_File()<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> d :call <SID>Tlist_Remove_File(-1, 1)<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> x :call <SID>Tlist_Window_Zoom()<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> [[ :call <SID>Tlist_Window_Move_To_File(-1)<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> <BS> :call <SID>Tlist_Window_Move_To_File(-1)<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> ]] :call <SID>Tlist_Window_Move_To_File(1)<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> <Tab> :call <SID>Tlist_Window_Move_To_File(1)<CR>
+plugin/taglist.vim:    nnoremap <buffer> <silent> <F2> :call <SID>Tlist_Window_Toggle_Help_Text()<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('useopen')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('useopen')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('newwin')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('preview')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('prevwin')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('checktab')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('newtab')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Window_Jump_To_Tag('useopen')<CR>
+plugin/taglist.vim:                \ <C-o>:call <SID>Tlist_Change_Sort('cmd', 'toggle', '')<CR>
+plugin/taglist.vim:                                    \ <SID>Tlist_Window_Show_Info()<CR>
+plugin/taglist.vim:                            \ <C-o>:call <SID>Tlist_Window_Update_File()<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> d    <C-o>:call <SID>Tlist_Remove_File(-1, 1)<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> x    <C-o>:call <SID>Tlist_Window_Zoom()<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> [[   <C-o>:call <SID>Tlist_Window_Move_To_File(-1)<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> <BS> <C-o>:call <SID>Tlist_Window_Move_To_File(-1)<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> ]]   <C-o>:call <SID>Tlist_Window_Move_To_File(1)<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> <Tab> <C-o>:call <SID>Tlist_Window_Move_To_File(1)<CR>
+plugin/taglist.vim:    inoremap <buffer> <silent> <F2>  <C-o>:call <SID>Tlist_Window_Toggle_Help_Text()<CR>
+plugin/taglist.vim:    if g:Tlist_Use_SingleClick == 1
+plugin/taglist.vim:                    \ 'call <SID>Tlist_Window_Jump_To_Tag("useopen") ' .
+plugin/taglist.vim:        autocmd CursorHold __Tag_List__ call s:Tlist_Window_Show_Info()
+plugin/taglist.vim:        autocmd CursorHold * silent call s:Tlist_Window_Highlight_Tag(
+plugin/taglist.vim:        autocmd BufUnload __Tag_List__ call s:Tlist_Post_Close_Cleanup()
+plugin/taglist.vim:        if g:Tlist_File_Fold_Auto_Close
+plugin/taglist.vim:                \ call s:Tlist_Window_Open_File_Fold(expand('<abuf>'))
+plugin/taglist.vim:        if g:Tlist_Exit_OnlyWindow
+plugin/taglist.vim:			\ call s:Tlist_Window_Exit_Only_Window()
+plugin/taglist.vim:                    \ !g:Tlist_Process_File_Always &&
+plugin/taglist.vim:                    \ (!has('gui_running') || !g:Tlist_Show_Menu)
+plugin/taglist.vim:            autocmd BufEnter * call s:Tlist_Refresh()
+plugin/taglist.vim:        if !g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:                autocmd WinEnter * call s:Tlist_Window_Check_Width()
+plugin/taglist.vim:            autocmd TabEnter * silent call s:Tlist_Refresh_Folds()
+plugin/taglist.vim:" Tlist_Window_Refresh
+plugin/taglist.vim:function! s:Tlist_Window_Refresh()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Refresh()')
+plugin/taglist.vim:    if g:Tlist_Compact_Format == 0
+plugin/taglist.vim:        call s:Tlist_Window_Display_Help()
+plugin/taglist.vim:    if g:Tlist_Show_One_File
+plugin/taglist.vim:    " one file. Otherwise, when Tlist_Show_One_File is configured,
+plugin/taglist.vim:        call s:Tlist_Window_Refresh_File(s:tlist_{i}_filename,
+plugin/taglist.vim:    if g:Tlist_Auto_Update
+plugin/taglist.vim:                let ftype = s:Tlist_Get_Buffer_Filetype(i)
+plugin/taglist.vim:                if !s:Tlist_Skip_File(fname, ftype)
+plugin/taglist.vim:                    call s:Tlist_Window_Refresh_File(fname, ftype)
+plugin/taglist.vim:    " If Tlist_File_Fold_Auto_Close option is set, then close all the folds
+plugin/taglist.vim:    if g:Tlist_File_Fold_Auto_Close
+plugin/taglist.vim:" Tlist_Post_Close_Cleanup()
+plugin/taglist.vim:function! s:Tlist_Post_Close_Cleanup()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Post_Close_Cleanup()')
+plugin/taglist.vim:    if g:Tlist_Use_SingleClick
+plugin/taglist.vim:    if g:Tlist_Use_Horiz_Window || g:Tlist_Inc_Winwidth == 0 ||
+plugin/taglist.vim:                \ &columns < (80 + g:Tlist_WinWidth)
+plugin/taglist.vim:        let &columns= &columns - (g:Tlist_WinWidth + 1)
+plugin/taglist.vim:" Tlist_Window_Refresh_File()
+plugin/taglist.vim:function! s:Tlist_Window_Refresh_File(filename, ftype)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Refresh_File (' . a:filename . ')')
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(a:filename)
+plugin/taglist.vim:        if s:Tlist_User_Removed_File(a:filename)
+plugin/taglist.vim:        call s:Tlist_Discard_TagInfo(fidx)
+plugin/taglist.vim:        call s:Tlist_Window_Remove_File_From_Display(fidx)
+plugin/taglist.vim:        let ret_fidx = s:Tlist_Process_File(a:filename, a:ftype)
+plugin/taglist.vim:    if g:Tlist_Show_One_File
+plugin/taglist.vim:            call s:Tlist_Window_Remove_File_From_Display(s:tlist_cur_file_idx)
+plugin/taglist.vim:        if g:Tlist_Compact_Format
+plugin/taglist.vim:    if g:Tlist_Compact_Format
+plugin/taglist.vim:    if g:Tlist_Compact_Format == 0
+plugin/taglist.vim:            if g:Tlist_Compact_Format == 0
+plugin/taglist.vim:            if g:Tlist_Compact_Format == 0
+plugin/taglist.vim:            if g:Tlist_Compact_Format == 0
+plugin/taglist.vim:        if g:Tlist_Compact_Format == 0
+plugin/taglist.vim:    if g:Tlist_Compact_Format
+plugin/taglist.vim:    call s:Tlist_Window_Update_Line_Offsets(fidx + 1, 1, end - start + 1)
+plugin/taglist.vim:    if g:Tlist_Show_Menu
+plugin/taglist.vim:        call s:Tlist_Menu_Update_File(1)
+plugin/taglist.vim:" Tlist_Init_File
+plugin/taglist.vim:function! s:Tlist_Init_File(filename, ftype)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Init_File (' . a:filename . ')')
+plugin/taglist.vim:    let s:tlist_{fidx}_sort_type = g:Tlist_Sort_Type
+plugin/taglist.vim:" Tlist_Get_Tag_Type_By_Tag
+plugin/taglist.vim:function! s:Tlist_Get_Tag_Type_By_Tag(fidx, tidx)
+plugin/taglist.vim:    let {ttype_var} = s:Tlist_Extract_Tagtype(tag_line)
+plugin/taglist.vim:" Tlist_Get_Tag_Prototype
+plugin/taglist.vim:function! s:Tlist_Get_Tag_Prototype(fidx, tidx)
+plugin/taglist.vim:" Tlist_Get_Tag_SearchPat
+plugin/taglist.vim:function! s:Tlist_Get_Tag_SearchPat(fidx, tidx)
+plugin/taglist.vim:" Tlist_Get_Tag_Linenum
+plugin/taglist.vim:function! s:Tlist_Get_Tag_Linenum(fidx, tidx)
+plugin/taglist.vim:" Tlist_Parse_Tagline
+plugin/taglist.vim:function! s:Tlist_Parse_Tagline(tag_line)
+plugin/taglist.vim:    let ttype = s:Tlist_Extract_Tagtype(a:tag_line)
+plugin/taglist.vim:    if g:Tlist_Display_Prototype
+plugin/taglist.vim:        let ttxt = '    ' . s:Tlist_Get_Tag_Prototype(s:fidx, s:tidx)
+plugin/taglist.vim:        if g:Tlist_Display_Tag_Scope
+plugin/taglist.vim:            let tag_scope = s:Tlist_Extract_Tag_Scope(a:tag_line)
+plugin/taglist.vim:" Tlist_Process_File
+plugin/taglist.vim:function! s:Tlist_Process_File(filename, ftype)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Process_File (' . a:filename . ', ' .
+plugin/taglist.vim:    if s:Tlist_Skip_File(a:filename, a:ftype)
+plugin/taglist.vim:        if s:Tlist_FileType_Init(a:ftype) == 0
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(a:filename)
+plugin/taglist.vim:        let fidx = s:Tlist_Init_File(a:filename, a:ftype)
+plugin/taglist.vim:        call s:Tlist_Discard_TagInfo(fidx)
+plugin/taglist.vim:    let ctags_cmd = g:Tlist_Ctags_Cmd . ctags_args
+plugin/taglist.vim:        call s:Tlist_Log_Msg('Cmd inside batch file: ' . ctags_cmd)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Cmd: ' . ctags_cmd)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:            call s:Tlist_Warning_Msg(cmd_output)
+plugin/taglist.vim:        call s:Tlist_Log_Msg('No tags defined in ' . a:filename)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Generated tags information for ' . a:filename)
+plugin/taglist.vim:        " Tlist_Parse_Tagline() function.
+plugin/taglist.vim:                    \ '\=s:Tlist_Parse_Tagline(submatch(1))', 'g')
+plugin/taglist.vim:            let ttype = s:Tlist_Extract_Tagtype(one_line)
+plugin/taglist.vim:            if g:Tlist_Display_Prototype
+plugin/taglist.vim:                let ttxt = '    ' . s:Tlist_Get_Tag_Prototype(fidx, tidx)
+plugin/taglist.vim:                if g:Tlist_Display_Tag_Scope
+plugin/taglist.vim:                    let tag_scope = s:Tlist_Extract_Tag_Scope(one_line)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Processed ' . s:tlist_{fidx}_tag_count . 
+plugin/taglist.vim:" Tlist_Update_File
+plugin/taglist.vim:function! Tlist_Update_File(filename, ftype)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Update_File (' . a:filename . ')')
+plugin/taglist.vim:    if s:Tlist_Skip_File(a:filename, a:ftype)
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(fname)
+plugin/taglist.vim:        call s:Tlist_Update_Remove_List(fname, 0)
+plugin/taglist.vim:        call s:Tlist_Process_File(fname, a:ftype)
+plugin/taglist.vim:        if g:Tlist_Show_One_File && s:tlist_cur_file_idx != -1
+plugin/taglist.vim:                call s:Tlist_Process_File(fname, a:ftype)
+plugin/taglist.vim:        call s:Tlist_Window_Goto_Window()
+plugin/taglist.vim:        call s:Tlist_Window_Refresh_File(fname, a:ftype)
+plugin/taglist.vim:            call s:Tlist_Exe_Cmd_No_Acmds(save_winnr . 'wincmd w')
+plugin/taglist.vim:    if g:Tlist_Show_Menu
+plugin/taglist.vim:        call s:Tlist_Menu_Update_File(1)
+plugin/taglist.vim:" Tlist_Window_Close
+plugin/taglist.vim:function! s:Tlist_Window_Close()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Close()')
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Error: Taglist window is not open')
+plugin/taglist.vim:" Tlist_Window_Mark_File_Window
+plugin/taglist.vim:function! s:Tlist_Window_Mark_File_Window()
+plugin/taglist.vim:" Tlist_Window_Open
+plugin/taglist.vim:function! s:Tlist_Window_Open()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Open()')
+plugin/taglist.vim:    let curbuf_ftype = s:Tlist_Get_Buffer_Filetype('%')
+plugin/taglist.vim:    call s:Tlist_Window_Mark_File_Window()
+plugin/taglist.vim:    call s:Tlist_Window_Create()
+plugin/taglist.vim:    call s:Tlist_Window_Refresh()
+plugin/taglist.vim:    if g:Tlist_Show_One_File
+plugin/taglist.vim:        if !s:Tlist_Skip_File(curbuf_name, curbuf_ftype)
+plugin/taglist.vim:            call s:Tlist_Window_Refresh_File(curbuf_name, curbuf_ftype)
+plugin/taglist.vim:    if g:Tlist_File_Fold_Auto_Close
+plugin/taglist.vim:        let fidx = s:Tlist_Get_File_Index(curbuf_name)
+plugin/taglist.vim:    call s:Tlist_Window_Highlight_Tag(curbuf_name, cur_lnum, 1, 1)
+plugin/taglist.vim:" Tlist_Window_Toggle()
+plugin/taglist.vim:function! s:Tlist_Window_Toggle()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Toggle()')
+plugin/taglist.vim:        call s:Tlist_Window_Close()
+plugin/taglist.vim:    call s:Tlist_Window_Open()
+plugin/taglist.vim:    " Go back to the original window, if Tlist_GainFocus_On_ToggleOpen is not
+plugin/taglist.vim:    if !g:Tlist_GainFocus_On_ToggleOpen
+plugin/taglist.vim:        call s:Tlist_Exe_Cmd_No_Acmds('wincmd p')
+plugin/taglist.vim:    if g:Tlist_Show_Menu
+plugin/taglist.vim:        call s:Tlist_Menu_Update_File(0)
+plugin/taglist.vim:" Tlist_Process_Filelist
+plugin/taglist.vim:function! s:Tlist_Process_Filelist(file_names)
+plugin/taglist.vim:        let ftype = s:Tlist_Detect_Filetype(one_file)
+plugin/taglist.vim:        call Tlist_Update_File(one_file, ftype)
+plugin/taglist.vim:" Tlist_Process_Dir
+plugin/taglist.vim:function! s:Tlist_Process_Dir(dir_name, pat)
+plugin/taglist.vim:    let fcnt = s:Tlist_Process_Filelist(flist)
+plugin/taglist.vim:        let fcnt = fcnt + s:Tlist_Process_Dir(one_file, a:pat)
+plugin/taglist.vim:" Tlist_Add_Files_Recursive
+plugin/taglist.vim:function! s:Tlist_Add_Files_Recursive(dir, ...)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Error: ' . dir_name . ' is not a directory')
+plugin/taglist.vim:    let fcnt = s:Tlist_Process_Dir(dir_name, pat)
+plugin/taglist.vim:" Tlist_Add_Files
+plugin/taglist.vim:function! s:Tlist_Add_Files(...)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Error: No matching files are found')
+plugin/taglist.vim:    let fcnt = s:Tlist_Process_Filelist(flist)
+plugin/taglist.vim:" Tlist_Extract_Tagtype
+plugin/taglist.vim:function! s:Tlist_Extract_Tagtype(tag_line)
+plugin/taglist.vim:" Tlist_Extract_Tag_Scope
+plugin/taglist.vim:function! s:Tlist_Extract_Tag_Scope(tag_line)
+plugin/taglist.vim:" Tlist_Refresh()
+plugin/taglist.vim:function! s:Tlist_Refresh()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Refresh (Skip_Refresh = ' .
+plugin/taglist.vim:                \ s:Tlist_Skip_Refresh . ', ' . bufname('%') . ')')
+plugin/taglist.vim:    if s:Tlist_Skip_Refresh
+plugin/taglist.vim:        if g:Tlist_Show_Menu
+plugin/taglist.vim:            call s:Tlist_Menu_Update_File(0)
+plugin/taglist.vim:    if (s:tlist_app_name == 'winmanager') && !g:Tlist_Process_File_Always
+plugin/taglist.vim:                \ && !g:Tlist_Show_Menu
+plugin/taglist.vim:    let ftype = s:Tlist_Get_Buffer_Filetype('%')
+plugin/taglist.vim:    if s:Tlist_Skip_File(filename, ftype)
+plugin/taglist.vim:    if tlist_win == -1 && !g:Tlist_Process_File_Always && !g:Tlist_Show_Menu
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(filename)
+plugin/taglist.vim:        if s:Tlist_User_Removed_File(filename)
+plugin/taglist.vim:        if !g:Tlist_Auto_Update
+plugin/taglist.vim:        let fidx = s:Tlist_Process_File(filename, ftype)
+plugin/taglist.vim:            call Tlist_Update_File(filename, ftype)
+plugin/taglist.vim:        call s:Tlist_Window_Goto_Window()
+plugin/taglist.vim:        if !g:Tlist_Auto_Highlight_Tag || !g:Tlist_Highlight_Tag_On_BufEnter
+plugin/taglist.vim:        call s:Tlist_Window_Refresh_File(filename, ftype)
+plugin/taglist.vim:        if g:Tlist_Highlight_Tag_On_BufEnter && g:Tlist_Auto_Highlight_Tag
+plugin/taglist.vim:            if g:Tlist_Show_One_File && s:tlist_cur_file_idx != fidx
+plugin/taglist.vim:            call s:Tlist_Window_Highlight_Tag(filename, cur_lnum, 1, center_tag_line)
+plugin/taglist.vim:            call s:Tlist_Exe_Cmd_No_Acmds(save_winnr . 'wincmd w')
+plugin/taglist.vim:    if g:Tlist_Show_Menu
+plugin/taglist.vim:        call s:Tlist_Menu_Update_File(0)
+plugin/taglist.vim:" Tlist_Change_Sort()
+plugin/taglist.vim:function! s:Tlist_Change_Sort(caller, action, sort_type)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Change_Sort (caller = ' . a:caller .
+plugin/taglist.vim:        let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(line('.'))
+plugin/taglist.vim:        let fidx = s:Tlist_Get_File_Index(fnamemodify(bufname('%'), ':p'))
+plugin/taglist.vim:        call s:Tlist_Window_Refresh_File(s:tlist_{fidx}_filename,
+plugin/taglist.vim:        call s:Tlist_Menu_Update_File(1)
+plugin/taglist.vim:        call s:Tlist_Menu_Remove_File()
+plugin/taglist.vim:        call s:Tlist_Refresh()
+plugin/taglist.vim:" Tlist_Update_Current_File()
+plugin/taglist.vim:function! s:Tlist_Update_Current_File()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Update_Current_File()')
+plugin/taglist.vim:        call s:Tlist_Window_Update_File()
+plugin/taglist.vim:        let fidx = s:Tlist_Get_File_Index(filename)
+plugin/taglist.vim:        let ft = s:Tlist_Get_Buffer_Filetype('%')
+plugin/taglist.vim:        call Tlist_Update_File(filename, ft)
+plugin/taglist.vim:" Tlist_Window_Update_File()
+plugin/taglist.vim:function! s:Tlist_Window_Update_File()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Update_File()')
+plugin/taglist.vim:    let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(line('.'))
+plugin/taglist.vim:    call s:Tlist_Window_Refresh_File(s:tlist_{fidx}_filename,
+plugin/taglist.vim:" Tlist_Window_Get_Tag_Type_By_Linenum()
+plugin/taglist.vim:function! s:Tlist_Window_Get_Tag_Type_By_Linenum(fidx, lnum)
+plugin/taglist.vim:" Tlist_Window_Get_Tag_Index()
+plugin/taglist.vim:function! s:Tlist_Window_Get_Tag_Index(fidx, lnum)
+plugin/taglist.vim:    let ttype = s:Tlist_Window_Get_Tag_Type_By_Linenum(a:fidx, a:lnum)
+plugin/taglist.vim:" Tlist_Window_Highlight_Line
+plugin/taglist.vim:function! s:Tlist_Window_Highlight_Line()
+plugin/taglist.vim:    if g:Tlist_Display_Prototype == 0
+plugin/taglist.vim:" Tlist_Window_Open_File
+plugin/taglist.vim:function! s:Tlist_Window_Open_File(win_ctrl, filename, tagpat)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Open_File (' . a:filename . ',' .
+plugin/taglist.vim:    let prev_Tlist_Skip_Refresh = s:Tlist_Skip_Refresh
+plugin/taglist.vim:    let s:Tlist_Skip_Refresh = 1
+plugin/taglist.vim:        call s:Tlist_Window_Open()
+plugin/taglist.vim:            call s:Tlist_Window_Open()
+plugin/taglist.vim:            if g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:                    if g:Tlist_Use_Right_Window
+plugin/taglist.vim:                    call s:Tlist_Exe_Cmd_No_Acmds('wincmd p')
+plugin/taglist.vim:                    if g:Tlist_Use_Horiz_Window
+plugin/taglist.vim:                        exe 'resize ' . g:Tlist_WinHeight
+plugin/taglist.vim:                        exe 'vertical resize ' . g:Tlist_WinWidth
+plugin/taglist.vim:                    call s:Tlist_Exe_Cmd_No_Acmds('wincmd p')
+plugin/taglist.vim:        call s:Tlist_Window_Mark_File_Window()
+plugin/taglist.vim:        if g:Tlist_Close_On_Select
+plugin/taglist.vim:            call s:Tlist_Window_Goto_Window()
+plugin/taglist.vim:                call s:Tlist_Exe_Cmd_No_Acmds(wnum . 'wincmd w')
+plugin/taglist.vim:    let s:Tlist_Skip_Refresh = prev_Tlist_Skip_Refresh
+plugin/taglist.vim:" Tlist_Window_Jump_To_Tag()
+plugin/taglist.vim:function! s:Tlist_Window_Jump_To_Tag(win_ctrl)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Jump_To_Tag(' . a:win_ctrl . ')')
+plugin/taglist.vim:    let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(lnum)
+plugin/taglist.vim:    let tidx = s:Tlist_Window_Get_Tag_Index(fidx, lnum)
+plugin/taglist.vim:        let tagpat = s:Tlist_Get_Tag_SearchPat(fidx, tidx)
+plugin/taglist.vim:        call s:Tlist_Window_Highlight_Line()
+plugin/taglist.vim:    call s:Tlist_Window_Open_File(a:win_ctrl, s:tlist_{fidx}_filename, tagpat)
+plugin/taglist.vim:" Tlist_Window_Show_Info()
+plugin/taglist.vim:function! s:Tlist_Window_Show_Info()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Show_Info()')
+plugin/taglist.vim:    let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(lnum)
+plugin/taglist.vim:    let tidx = s:Tlist_Window_Get_Tag_Index(fidx, lnum)
+plugin/taglist.vim:        let ttype = s:Tlist_Window_Get_Tag_Type_By_Linenum(fidx, lnum)
+plugin/taglist.vim:    echo s:Tlist_Get_Tag_Prototype(fidx, tidx)
+plugin/taglist.vim:" Tlist_Find_Nearest_Tag_Idx
+plugin/taglist.vim:function! s:Tlist_Find_Nearest_Tag_Idx(fidx, linenum)
+plugin/taglist.vim:        let first_lnum = s:Tlist_Get_Tag_Linenum(a:fidx, 1)
+plugin/taglist.vim:            let middle_lnum = s:Tlist_Get_Tag_Linenum(a:fidx, middle)
+plugin/taglist.vim:            let lnum = s:Tlist_Get_Tag_Linenum(a:fidx, left)
+plugin/taglist.vim:" Tlist_Window_Highlight_Tag()
+plugin/taglist.vim:" cntx == 2, Forced by the user through the TlistHighlightTag command
+plugin/taglist.vim:function! s:Tlist_Window_Highlight_Tag(filename, cur_lnum, cntx, center)
+plugin/taglist.vim:    if !g:Tlist_Auto_Highlight_Tag && a:cntx == 1
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Error: Taglist window is not open')
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(a:filename)
+plugin/taglist.vim:    let tidx = s:Tlist_Find_Nearest_Tag_Idx(fidx, a:cur_lnum)
+plugin/taglist.vim:    let ttype = s:Tlist_Get_Tag_Type_By_Tag(fidx, tidx)
+plugin/taglist.vim:    call s:Tlist_Window_Highlight_Line()
+plugin/taglist.vim:" Tlist_Get_Tag_Prototype_By_Line
+plugin/taglist.vim:function! Tlist_Get_Tag_Prototype_By_Line(...)
+plugin/taglist.vim:        let msg =  'Usage: Tlist_Get_Tag_Prototype_By_Line <filename> ' .
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(filename)
+plugin/taglist.vim:    let tidx = s:Tlist_Find_Nearest_Tag_Idx(fidx, linenr)
+plugin/taglist.vim:    return s:Tlist_Get_Tag_Prototype(fidx, tidx)
+plugin/taglist.vim:" Tlist_Get_Tagname_By_Line
+plugin/taglist.vim:function! Tlist_Get_Tagname_By_Line(...)
+plugin/taglist.vim:        let msg =  'Usage: Tlist_Get_Tagname_By_Line <filename> <line_number>'
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(filename)
+plugin/taglist.vim:    let tidx = s:Tlist_Find_Nearest_Tag_Idx(fidx, linenr)
+plugin/taglist.vim:" Tlist_Window_Move_To_File
+plugin/taglist.vim:function! s:Tlist_Window_Move_To_File(dir)
+plugin/taglist.vim:    let fidx = s:Tlist_Window_Get_File_Index_By_Linenum(line('.'))
+plugin/taglist.vim:" Tlist_Session_Load
+plugin/taglist.vim:function! s:Tlist_Session_Load(...)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Usage: TlistSessionLoad <filename>')
+plugin/taglist.vim:        call s:Tlist_Warning_Msg(msg)
+plugin/taglist.vim:    call s:Tlist_Window_Mark_File_Window()
+plugin/taglist.vim:            if s:Tlist_FileType_Init(ftype) == 0
+plugin/taglist.vim:        let fidx = s:Tlist_Get_File_Index(fname)
+plugin/taglist.vim:            call s:Tlist_Update_Remove_List(fname, 0)
+plugin/taglist.vim:        let fidx = s:Tlist_Init_File(fname, ftype)
+plugin/taglist.vim:        call s:Tlist_Window_Goto_Window()
+plugin/taglist.vim:        call s:Tlist_Window_Refresh()
+plugin/taglist.vim:            call s:Tlist_Exe_Cmd_No_Acmds('wincmd p')
+plugin/taglist.vim:" Tlist_Session_Save
+plugin/taglist.vim:function! s:Tlist_Session_Save(...)
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Usage: TlistSessionSave <filename>')
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Warning: Taglist is empty. Nothing to save.')
+plugin/taglist.vim:" Tlist_Buffer_Removed
+plugin/taglist.vim:function! s:Tlist_Buffer_Removed(filename)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Buffer_Removed (' . a:filename .  ')')
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(a:filename)
+plugin/taglist.vim:    call s:Tlist_Remove_File(fidx, 0)
+plugin/taglist.vim:autocmd BufDelete * silent call s:Tlist_Buffer_Removed(expand('<afile>:p'))
+plugin/taglist.vim:" Tlist_Window_Open_File_Fold
+plugin/taglist.vim:function! s:Tlist_Window_Open_File_Fold(acmd_bufnr)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Window_Open_File_Fold (' . a:acmd_bufnr . ')')
+plugin/taglist.vim:        call s:Tlist_Warning_Msg('Taglist: Error - Taglist window is not open')
+plugin/taglist.vim:        call s:Tlist_Exe_Cmd_No_Acmds(winnum . 'wincmd w')
+plugin/taglist.vim:        let fidx = s:Tlist_Get_File_Index(fname)
+plugin/taglist.vim:        call s:Tlist_Exe_Cmd_No_Acmds(org_winnr . 'wincmd w')
+plugin/taglist.vim:" Tlist_Window_Check_Auto_Open
+plugin/taglist.vim:function! s:Tlist_Window_Check_Auto_Open()
+plugin/taglist.vim:        let ft = s:Tlist_Get_Buffer_Filetype(buf_num)
+plugin/taglist.vim:        if !s:Tlist_Skip_File(filename, ft)
+plugin/taglist.vim:        call s:Tlist_Window_Toggle()
+plugin/taglist.vim:" Tlist_Refresh_Folds
+plugin/taglist.vim:function! s:Tlist_Refresh_Folds()
+plugin/taglist.vim:function! s:Tlist_Menu_Add_Base_Menu()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Adding the base menu')
+plugin/taglist.vim:    anoremenu <silent> T&ags.Refresh\ menu :call <SID>Tlist_Menu_Refresh()<CR>
+plugin/taglist.vim:                    \ :call <SID>Tlist_Change_Sort('menu', 'set', 'name')<CR>
+plugin/taglist.vim:                    \ :call <SID>Tlist_Change_Sort('menu', 'set', 'order')<CR>
+plugin/taglist.vim:                    \ :call <SID>Tlist_Menu_Refresh()<CR>
+plugin/taglist.vim:                  \ :call <SID>Tlist_Change_Sort('menu', 'set', 'name')<CR>
+plugin/taglist.vim:                  \ :call <SID>Tlist_Change_Sort('menu', 'set', 'order')<CR>
+plugin/taglist.vim:" Tlist_Menu_Get_Tag_Type_Cmd
+plugin/taglist.vim:function! s:Tlist_Menu_Get_Tag_Type_Cmd(fidx, ftype, add_ttype_name, ttype_idx)
+plugin/taglist.vim:    if tcnt > g:Tlist_Max_Submenu_Items
+plugin/taglist.vim:            let final_index = j + g:Tlist_Max_Submenu_Items - 1
+plugin/taglist.vim:            let first_tag = strpart(first_tag, 0, g:Tlist_Max_Tag_Length)
+plugin/taglist.vim:            let last_tag = strpart(last_tag, 0, g:Tlist_Max_Tag_Length)
+plugin/taglist.vim:                            \ tname . ' :call <SID>Tlist_Menu_Jump_To_Tag(' .
+plugin/taglist.vim:                        \ tname . ' :call <SID>Tlist_Menu_Jump_To_Tag(' . tidx
+plugin/taglist.vim:function! s:Tlist_Menu_File_Refresh(fidx)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Refreshing the tag menu for ' . s:tlist_{a:fidx}_filename)
+plugin/taglist.vim:" Tlist_Menu_Update_File
+plugin/taglist.vim:function! s:Tlist_Menu_Update_File(clear_menu)
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Updating the tag menu, clear_menu = ' . a:clear_menu)
+plugin/taglist.vim:        call s:Tlist_Menu_Remove_File()
+plugin/taglist.vim:    let ftype = s:Tlist_Get_Buffer_Filetype('%')
+plugin/taglist.vim:    if s:Tlist_Skip_File(filename, ftype)
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(filename)
+plugin/taglist.vim:        if s:Tlist_User_Removed_File(filename)
+plugin/taglist.vim:        let fidx = s:Tlist_Process_File(filename, ftype)
+plugin/taglist.vim:        call s:Tlist_Menu_File_Refresh(fidx)
+plugin/taglist.vim:        let mcmd = s:Tlist_Menu_Get_Tag_Type_Cmd(fidx, ftype, add_ttype_name, i)
+plugin/taglist.vim:    call s:Tlist_Menu_File_Refresh(fidx)
+plugin/taglist.vim:" Tlist_Menu_Remove_File
+plugin/taglist.vim:function! s:Tlist_Menu_Remove_File()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Removing the tags menu for a file')
+plugin/taglist.vim:    call s:Tlist_Menu_Add_Base_Menu()
+plugin/taglist.vim:" Tlist_Menu_Refresh
+plugin/taglist.vim:function! s:Tlist_Menu_Refresh()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Refreshing the tags menu')
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(fnamemodify(bufname('%'), ':p'))
+plugin/taglist.vim:    call s:Tlist_Update_Current_File()
+plugin/taglist.vim:" Tlist_Menu_Jump_To_Tag
+plugin/taglist.vim:function! s:Tlist_Menu_Jump_To_Tag(tidx)
+plugin/taglist.vim:    let fidx = s:Tlist_Get_File_Index(fnamemodify(bufname('%'), ':p'))
+plugin/taglist.vim:    let tagpat = s:Tlist_Get_Tag_SearchPat(fidx, a:tidx)
+plugin/taglist.vim:" Tlist_Menu_Init
+plugin/taglist.vim:function! s:Tlist_Menu_Init()
+plugin/taglist.vim:    call s:Tlist_Menu_Add_Base_Menu()
+plugin/taglist.vim:        if !g:Tlist_Process_File_Always
+plugin/taglist.vim:            autocmd BufEnter * call s:Tlist_Refresh()
+plugin/taglist.vim:        autocmd BufLeave * call s:Tlist_Menu_Remove_File()
+plugin/taglist.vim:    call s:Tlist_Menu_Update_File(0)
+plugin/taglist.vim:" Tlist_Vim_Session_Load
+plugin/taglist.vim:function! s:Tlist_Vim_Session_Load()
+plugin/taglist.vim:    call s:Tlist_Log_Msg('Tlist_Vim_Session_Load')
+plugin/taglist.vim:    call s:Tlist_Window_Init()
+plugin/taglist.vim:    call s:Tlist_Window_Refresh()
+plugin/taglist.vim:" Tlist_Set_App
+plugin/taglist.vim:function! Tlist_Set_App(name)
+plugin/taglist.vim:    call Tlist_Set_App('winmanager')
+plugin/taglist.vim:        let ftype = s:Tlist_Get_Buffer_Filetype(bufnum)
+plugin/taglist.vim:        call s:Tlist_Window_Init()
+plugin/taglist.vim:        call s:Tlist_Window_Refresh()
+plugin/taglist.vim:        if !s:Tlist_Skip_File(filename, ftype) && g:Tlist_Auto_Update
+plugin/taglist.vim:            call s:Tlist_Window_Refresh_File(filename, ftype)
