@@ -24,7 +24,7 @@ set nu
 " set backupdir=~/.backup/
 
 " 突出显示当前行
-"set cursorline
+set cursorline
 
 " tag list
 let Tlist_Show_One_File=1
