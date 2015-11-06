@@ -73,8 +73,10 @@ nnoremap <C-K> <C-W>-
 nnoremap <F8> :tabe %<CR>
 "nnoremap 1 :tabp<CR>
 "nnoremap 2 :tabn<CR>
-nnoremap <Space> :tabn<CR>
+"nnoremap <Space> :tabn<CR>
 "nnoremap <S-Space> :tabp<CR>
+map <C-n> :tabnext<cr>
+map <C-p> :tabprevious<cr>
 
 " format file
 map <C-\> ggVG= <C-O><C-O>

@@ -277,6 +277,8 @@ map <leader>tn :tabnew %<cr>
 map <leader>te :tabedit
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
+map <C-n> :tabnext<cr>
+map <C-p> :tabprevious<cr>
 try
   set switchbuf=usetab
   set stal=4
