@@ -75,6 +75,8 @@ endfunction
 "Set encoding, by veelion
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,gb18030,default
+set termencoding=utf-8
+set encoding=utf-8
 
 "Sets how many lines of history VIM har to remember
 set history=400
